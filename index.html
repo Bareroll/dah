@@ -75,6 +75,13 @@
   <script>
     let clickCount = 0;
 
+    const questionTexts = [
+      "Are you sure?",
+      "Are you really sure?",
+      "Are you absolutely sure?",
+      "Are you absolutely, really sure?"
+    ];
+
     function handleYes() {
       alert('Yay! I’m so excited! 💕');
     }
@@ -85,6 +92,11 @@
       let yesButton = document.getElementById('yesButton');
       let noButton = document.getElementById('noButton');
       let question = document.getElementById('question');
+
+      // Change the question text based on click count
+      if (clickCount <= 4) {
+        question.textContent = questionTexts[clickCount - 1];
+      }
 
       // On the first click, change the button's position to absolute
       if (clickCount === 1) {
