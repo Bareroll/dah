@@ -6,6 +6,17 @@
   <title>Will You Be My Valentine?</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f8e8f8;
@@ -17,7 +28,7 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
-      position: relative; /* Allows absolute positioning of buttons */
+      position: relative;
     }
 
     .question {
@@ -47,7 +58,7 @@
 
     .no {
       background-color: #ccc;
-      position: static; /* Default position for the first display */
+      position: static;
     }
 
     .no:hover {
