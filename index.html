@@ -15,7 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: hidden; /* Prevent scrolling when Yes button fills the screen */
+      overflow: hidden;
     }
 
     .card {
@@ -25,19 +25,11 @@
       box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
       padding: 2rem;
       text-align: center;
-      position: relative;
-      z-index: 1; /* Ensure the card is below the full-screen button */
     }
 
     h1 {
       font-size: 2rem;
       color: #e6399b;
-    }
-
-    p {
-      font-size: 1rem;
-      color: #333;
-      margin-bottom: 2rem;
     }
 
     .buttons {
@@ -72,14 +64,14 @@
 
     /* Full-screen style for the Yes button */
     .full-screen {
-      position: fixed; /* Ensures it covers the entire screen */
+      position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
       font-size: 2rem;
       border-radius: 0;
-      z-index: 1000; /* Brings it above everything */
+      z-index: 1000;
     }
   </style>
 </head>
@@ -87,10 +79,13 @@
   <div class="card">
     <h1>Will You Be My Valentine?</h1>
     <div class="buttons">
-      <button id="yesButton" onclick="handleYes()">Yes!</button>
+      <!-- No longer inside the card -->
       <button id="noButton" class="no" onclick="handleNo()">No...</button>
     </div>
   </div>
+  
+  <!-- Moved Yes button outside the card -->
+  <button id="yesButton" onclick="handleYes()">Yes!</button>
 
   <script>
     let clickCount = 0;
@@ -101,19 +96,19 @@
 
     function handleNo() {
       clickCount++;
-      
-      // Gradually adjust the button sizes
+
       let yesButton = document.getElementById('yesButton');
       let noButton = document.getElementById('noButton');
-      
+
+      // Gradually adjust button sizes
       yesButton.style.width = `${48 + clickCount * 10}%`;
       noButton.style.width = `${48 - clickCount * 10}%`;
 
-      // After 5 clicks, make the Yes button cover the screen and remove No button
+      // After 5 clicks, remove No button and expand Yes button
       if (clickCount >= 5) {
         noButton.remove();
         document.querySelector('.card').style.display = 'none'; // Hide the card
-        yesButton.classList.add('full-screen'); // Expand Yes button to full screen
+        yesButton.classList.add('full-screen'); // Make Yes button cover the whole screen
       }
     }
   </script>
