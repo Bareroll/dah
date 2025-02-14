@@ -18,27 +18,23 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      font-family: 'Poppins', sans-serif;
     }
 
-    body {
-      font-family: 'Poppins', sans-serif;
+    .container {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      position: relative;
+      height: 100vh;
       background-color: #f8e8f8;
-    }
-
-    /* Style for the first screen */
-    .question-container {
-      text-align: center;
     }
 
     .question {
       font-size: 2rem;
       color: #e6399b;
       margin-bottom: 2rem;
+      text-align: center;
     }
 
     button {
@@ -59,58 +55,61 @@
       background-color: #d52787;
     }
 
-    /* Full-screen style for the Yes button */
-    .full-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      font-size: 2rem;
-      border-radius: 0;
-      z-index: 1000;
-      margin: 0;
+    .no {
+      background-color: #ccc;
+      position: static;
     }
 
-    /* The screen after clicking "Yes" */
-    .new-screen {
-      background-color: pink;
-      height: 100vh;
-      width: 100vw;
-      display: flex;
+    .no:hover {
+      background-color: #999;
+    }
+
+    /* Valentine screen */
+    .valentine-screen {
+      display: none;
       justify-content: center;
       align-items: center;
       flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+      background-color: #ffb6c1;
       text-align: center;
     }
 
-    .quote {
+    .valentine-text {
       font-size: 2rem;
-      color: #fff;
+      font-weight: bold;
+      color: white;
       margin-bottom: 2rem;
     }
 
-    /* Green box for pictures */
-    .green-box {
-      background-color: green;
-      width: 100px;
-      height: 100px;
-      margin: 1rem;
-    }
-
-    .box-container {
+    .image-container {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       width: 80%;
     }
 
+    .image-placeholder {
+      width: 150px;
+      height: 150px;
+      background-color: green;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
-  <div class="question-container" id="questionContainer">
+  <div class="container" id="mainContainer">
     <div class="question" id="question">Will You Be My Valentine?</div>
     <button id="yesButton" onclick="handleYes()">Yes!</button>
     <button id="noButton" class="no" onclick="handleNo()">No...</button>
+  </div>
+
+  <div class="valentine-screen" id="valentineScreen">
+    <div class="valentine-text">Yay! I Love You, My Valentine 💕</div>
+    <div class="image-container">
+      <div class="image-placeholder"></div>
+      <div class="image-placeholder"></div>
+    </div>
   </div>
 
   <script>
@@ -124,17 +123,8 @@
     ];
 
     function handleYes() {
-      // Change the screen content after clicking "Yes"
-      const questionContainer = document.getElementById("questionContainer");
-      questionContainer.innerHTML = `
-        <div class="new-screen">
-          <div class="quote">Yay! I Love You, My Valentine 💕</div>
-          <div class="box-container">
-            <div class="green-box"></div>
-            <div class="green-box"></div>
-          </div>
-        </div>
-      `;
+      document.getElementById('mainContainer').style.display = 'none';
+      document.getElementById('valentineScreen').style.display = 'flex';
     }
 
     function handleNo() {
@@ -144,17 +134,14 @@
       let noButton = document.getElementById('noButton');
       let question = document.getElementById('question');
 
-      // Change the question text based on click count
       if (clickCount <= 4) {
         question.textContent = questionTexts[clickCount - 1];
       }
 
-      // On the first click, change the button's position to absolute
       if (clickCount === 1) {
         noButton.style.position = 'absolute';
       }
 
-      // Function to generate random positions and avoid overlaps
       function getRandomPosition() {
         const maxX = window.innerWidth - noButton.offsetWidth;
         const maxY = window.innerHeight - noButton.offsetHeight;
@@ -163,17 +150,13 @@
         do {
           randomX = Math.floor(Math.random() * maxX);
           randomY = Math.floor(Math.random() * maxY);
-
-          // Check for overlaps
           overlaps = isOverlapping(randomX, randomY, noButton, yesButton) ||
-                     isOverlapping(randomX, randomY, noButton, question);
-
-        } while (overlaps); // Keep generating new positions until no overlap is found
+                     isOverlapping(randomX, randomY, question);
+        } while (overlaps);
 
         return { x: randomX, y: randomY };
       }
 
-      // Function to check if two elements overlap
       function isOverlapping(x, y, element, otherElement) {
         const elementRect = { left: x, top: y, right: x + element.offsetWidth, bottom: y + element.offsetHeight };
         const otherRect = otherElement.getBoundingClientRect();
@@ -185,20 +168,17 @@
         );
       }
 
-      // Move the "No" button to a new position
       const { x, y } = getRandomPosition();
       noButton.style.left = `${x}px`;
       noButton.style.top = `${y}px`;
 
-      // Gradually adjust button sizes
       yesButton.style.width = `${48 + clickCount * 10}%`;
       noButton.style.width = `${48 - clickCount * 10}%`;
 
-      // After 5 clicks, remove No button and expand Yes button
       if (clickCount >= 5) {
         noButton.remove();
-        question.style.display = 'none'; // Hide the question
-        yesButton.classList.add('full-screen'); // Make Yes button cover the whole screen
+        question.style.display = 'none';
+        yesButton.classList.add('full-screen');
       }
     }
   </script>
