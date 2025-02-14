@@ -52,7 +52,7 @@
       border-radius: 10px;
       cursor: pointer;
       width: 48%;
-      transition: background-color 0.3s, width 0.3s;
+      transition: all 0.3s;
     }
 
     button:hover {
@@ -67,14 +67,13 @@
       background-color: #999;
     }
 
-    .bigger {
-      width: 60%; /* Increases the width of the Yes button */
+    /* Full-screen style for the Yes button */
+    .full-screen {
+      width: 100%;
+      height: 100vh;
+      font-size: 2rem;
+      border-radius: 0;
     }
-
-    .smaller {
-      width: 36%; /* Decreases the width of the No button */
-    }
-
   </style>
 </head>
 <body>
@@ -87,14 +86,28 @@
   </div>
 
   <script>
+    let clickCount = 0;
+
     function handleYes() {
       alert('Yay! I’m so excited! 💕');
     }
 
     function handleNo() {
-      // Make the 'Yes' button bigger and 'No' button smaller
-      document.getElementById('yesButton').classList.add('bigger');
-      document.getElementById('noButton').classList.add('smaller');
+      clickCount++;
+      
+      // Gradually adjust the button sizes
+      let yesButton = document.getElementById('yesButton');
+      let noButton = document.getElementById('noButton');
+      
+      yesButton.style.width = `${48 + clickCount * 10}%`;
+      noButton.style.width = `${48 - clickCount * 10}%`;
+
+      // After 5 clicks, make the Yes button cover the screen and remove No button
+      if (clickCount >= 5) {
+        noButton.remove();
+        yesButton.classList.add('full-screen');
+        document.querySelector('.card').style.padding = '0'; // Remove padding from the card
+      }
     }
   </script>
 </body>
