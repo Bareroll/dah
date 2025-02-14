@@ -52,7 +52,7 @@
       border-radius: 10px;
       cursor: pointer;
       width: 48%;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s, width 0.3s;
     }
 
     button:hover {
@@ -81,8 +81,8 @@
   <div class="card">
     <h1>Will You Be My Valentine?</h1>
     <div class="buttons">
-      <button onclick="handleYes()">Yes!</button>
-      <button class="no" onclick="handleNo()">No...</button>
+      <button id="yesButton" onclick="handleYes()">Yes!</button>
+      <button id="noButton" class="no" onclick="handleNo()">No...</button>
     </div>
   </div>
 
@@ -92,6 +92,7 @@
     }
 
     function handleNo() {
+      // Make the 'Yes' button bigger and 'No' button smaller
       document.getElementById('yesButton').classList.add('bigger');
       document.getElementById('noButton').classList.add('smaller');
     }
