@@ -68,7 +68,7 @@
   </style>
 </head>
 <body>
-  <div class="question">Will You Be My Valentine?</div>
+  <div class="question" id="question">Will You Be My Valentine?</div>
   <button id="yesButton" onclick="handleYes()">Yes!</button>
   <button id="noButton" class="no" onclick="handleNo()">No...</button>
 
@@ -84,20 +84,48 @@
 
       let yesButton = document.getElementById('yesButton');
       let noButton = document.getElementById('noButton');
+      let question = document.getElementById('question');
 
       // On the first click, change the button's position to absolute
       if (clickCount === 1) {
         noButton.style.position = 'absolute';
       }
 
-      // Move the "No" button to a random position
-      const maxX = window.innerWidth - noButton.offsetWidth;
-      const maxY = window.innerHeight - noButton.offsetHeight;
-      const randomX = Math.floor(Math.random() * maxX);
-      const randomY = Math.floor(Math.random() * maxY);
+      // Function to generate random positions and avoid overlaps
+      function getRandomPosition() {
+        const maxX = window.innerWidth - noButton.offsetWidth;
+        const maxY = window.innerHeight - noButton.offsetHeight;
+        let randomX, randomY, overlaps;
 
-      noButton.style.left = `${randomX}px`;
-      noButton.style.top = `${randomY}px`;
+        do {
+          randomX = Math.floor(Math.random() * maxX);
+          randomY = Math.floor(Math.random() * maxY);
+
+          // Check for overlaps
+          overlaps = isOverlapping(randomX, randomY, noButton, yesButton) ||
+                     isOverlapping(randomX, randomY, noButton, question);
+
+        } while (overlaps); // Keep generating new positions until no overlap is found
+
+        return { x: randomX, y: randomY };
+      }
+
+      // Function to check if two elements overlap
+      function isOverlapping(x, y, element, otherElement) {
+        const elementRect = { left: x, top: y, right: x + element.offsetWidth, bottom: y + element.offsetHeight };
+        const otherRect = otherElement.getBoundingClientRect();
+        return (
+          elementRect.left < otherRect.right &&
+          elementRect.right > otherRect.left &&
+          elementRect.top < otherRect.bottom &&
+          elementRect.bottom > otherRect.top
+        );
+      }
+
+      // Move the "No" button to a new position
+      const { x, y } = getRandomPosition();
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
 
       // Gradually adjust button sizes
       yesButton.style.width = `${48 + clickCount * 10}%`;
@@ -106,7 +134,7 @@
       // After 5 clicks, remove No button and expand Yes button
       if (clickCount >= 5) {
         noButton.remove();
-        document.querySelector('.question').style.display = 'none'; // Hide the question
+        question.style.display = 'none'; // Hide the question
         yesButton.classList.add('full-screen'); // Make Yes button cover the whole screen
       }
     }
