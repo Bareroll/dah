@@ -15,6 +15,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden; /* Prevents scrolling when Yes button fills the screen */
     }
 
     .card {
@@ -69,10 +70,14 @@
 
     /* Full-screen style for the Yes button */
     .full-screen {
-      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
       font-size: 2rem;
       border-radius: 0;
+      z-index: 1000; /* Ensures the button is on top of everything */
     }
   </style>
 </head>
@@ -105,8 +110,8 @@
       // After 5 clicks, make the Yes button cover the screen and remove No button
       if (clickCount >= 5) {
         noButton.remove();
-        yesButton.classList.add('full-screen');
-        document.querySelector('.card').style.padding = '0'; // Remove padding from the card
+        document.querySelector('.card').style.display = 'none'; // Hide the card
+        yesButton.classList.add('full-screen'); // Expand Yes button to full screen
       }
     }
   </script>
