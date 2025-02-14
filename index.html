@@ -17,25 +17,28 @@
       width: 100%;
       margin: 0;
       padding: 0;
-      overflow: hidden; /* Prevents any white space or scrolling */
+      overflow: hidden;
     }
 
     body {
       font-family: 'Poppins', sans-serif;
-      background-color: #f8e8f8;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       position: relative;
+      background-color: #f8e8f8;
+    }
+
+    /* Style for the first screen */
+    .question-container {
+      text-align: center;
     }
 
     .question {
       font-size: 2rem;
       color: #e6399b;
       margin-bottom: 2rem;
-      text-align: center;
     }
 
     button {
@@ -56,33 +59,59 @@
       background-color: #d52787;
     }
 
-    .no {
-      background-color: #ccc;
-      position: static;
-    }
-
-    .no:hover {
-      background-color: #999;
-    }
-
     /* Full-screen style for the Yes button */
     .full-screen {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw; /* Ensure it covers the entire viewport width */
-      height: 100vh; /* Ensure it covers the entire viewport height */
+      width: 100vw;
+      height: 100vh;
       font-size: 2rem;
       border-radius: 0;
       z-index: 1000;
       margin: 0;
     }
+
+    /* The screen after clicking "Yes" */
+    .new-screen {
+      background-color: pink;
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .quote {
+      font-size: 2rem;
+      color: #fff;
+      margin-bottom: 2rem;
+    }
+
+    /* Green box for pictures */
+    .green-box {
+      background-color: green;
+      width: 100px;
+      height: 100px;
+      margin: 1rem;
+    }
+
+    .box-container {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+    }
+
   </style>
 </head>
 <body>
-  <div class="question" id="question">Will You Be My Valentine?</div>
-  <button id="yesButton" onclick="handleYes()">Yes!</button>
-  <button id="noButton" class="no" onclick="handleNo()">No...</button>
+  <div class="question-container" id="questionContainer">
+    <div class="question" id="question">Will You Be My Valentine?</div>
+    <button id="yesButton" onclick="handleYes()">Yes!</button>
+    <button id="noButton" class="no" onclick="handleNo()">No...</button>
+  </div>
 
   <script>
     let clickCount = 0;
@@ -95,7 +124,17 @@
     ];
 
     function handleYes() {
-      alert('Yay! I’m so excited! 💕');
+      // Change the screen content after clicking "Yes"
+      const questionContainer = document.getElementById("questionContainer");
+      questionContainer.innerHTML = `
+        <div class="new-screen">
+          <div class="quote">Yay! I Love You, My Valentine 💕</div>
+          <div class="box-container">
+            <div class="green-box"></div>
+            <div class="green-box"></div>
+          </div>
+        </div>
+      `;
     }
 
     function handleNo() {
