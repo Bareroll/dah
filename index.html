@@ -17,6 +17,7 @@
       align-items: center;
       height: 100vh;
       overflow: hidden;
+      position: relative; /* Allows absolute positioning of buttons */
     }
 
     .question {
@@ -38,6 +39,7 @@
       width: 48%;
       transition: all 0.3s;
       margin: 1rem 0;
+      position: absolute; /* Allows for random positioning */
     }
 
     button:hover {
@@ -66,7 +68,6 @@
   </style>
 </head>
 <body>
-  <!-- Moved all elements outside the card -->
   <div class="question">Will You Be My Valentine?</div>
   <button id="yesButton" onclick="handleYes()">Yes!</button>
   <button id="noButton" class="no" onclick="handleNo()">No...</button>
@@ -83,6 +84,15 @@
 
       let yesButton = document.getElementById('yesButton');
       let noButton = document.getElementById('noButton');
+
+      // Move the "No" button to a random position
+      const maxX = window.innerWidth - noButton.offsetWidth;
+      const maxY = window.innerHeight - noButton.offsetHeight;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+
+      noButton.style.left = `${randomX}px`;
+      noButton.style.top = `${randomY}px`;
 
       // Gradually adjust button sizes
       yesButton.style.width = `${48 + clickCount * 10}%`;
