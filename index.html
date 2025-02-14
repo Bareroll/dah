@@ -18,16 +18,17 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      font-family: 'Poppins', sans-serif;
     }
 
-    .container {
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8e8f8;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #f8e8f8;
+      min-height: 100vh;
+      position: relative;
     }
 
     .question {
@@ -64,23 +65,37 @@
       background-color: #999;
     }
 
-    /* Valentine screen */
+    .full-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      font-size: 2rem;
+      border-radius: 0;
+      z-index: 1000;
+      margin: 0;
+    }
+
     .valentine-screen {
       display: none;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      height: 100vh;
+      background-color: pink;
       width: 100vw;
-      background-color: #ffb6c1;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
       text-align: center;
     }
 
-    .valentine-text {
-      font-size: 2rem;
+    .valentine-message {
+      font-size: 2.5rem;
       font-weight: bold;
-      color: white;
-      margin-bottom: 2rem;
+      color: #fff;
+      margin-bottom: 1rem;
     }
 
     .image-container {
@@ -89,26 +104,23 @@
       width: 80%;
     }
 
-    .image-placeholder {
+    .image-box {
       width: 150px;
       height: 150px;
       background-color: green;
-      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container" id="mainContainer">
-    <div class="question" id="question">Will You Be My Valentine?</div>
-    <button id="yesButton" onclick="handleYes()">Yes!</button>
-    <button id="noButton" class="no" onclick="handleNo()">No...</button>
-  </div>
+  <div class="question" id="question">Will You Be My Valentine?</div>
+  <button id="yesButton" onclick="handleYes()">Yes!</button>
+  <button id="noButton" class="no" onclick="handleNo()">No...</button>
 
   <div class="valentine-screen" id="valentineScreen">
-    <div class="valentine-text">Yay! I Love You, My Valentine 💕</div>
+    <div class="valentine-message">Yay! I Love You, My Valentine 💖</div>
     <div class="image-container">
-      <div class="image-placeholder"></div>
-      <div class="image-placeholder"></div>
+      <div class="image-box"></div>
+      <div class="image-box"></div>
     </div>
   </div>
 
@@ -123,7 +135,7 @@
     ];
 
     function handleYes() {
-      document.getElementById('mainContainer').style.display = 'none';
+      document.body.innerHTML = document.getElementById('valentineScreen').outerHTML;
       document.getElementById('valentineScreen').style.display = 'flex';
     }
 
@@ -151,7 +163,7 @@
           randomX = Math.floor(Math.random() * maxX);
           randomY = Math.floor(Math.random() * maxY);
           overlaps = isOverlapping(randomX, randomY, noButton, yesButton) ||
-                     isOverlapping(randomX, randomY, question);
+                     isOverlapping(randomX, randomY, noButton, question);
         } while (overlaps);
 
         return { x: randomX, y: randomY };
